@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Login & Admin Page</title>
+
+  <!-- Include Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Include DaisyUI -->
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.22/dist/full.min.css" rel="stylesheet" type="text/css" />
+
+  <!-- Include Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+
+  <script src="https://kit.fontawesome.com/5fc4420cfa.js" crossorigin="anonymous"></script>
+  <!-- Your Custom Module Files -->
+  <script type="module" src="firebase.js"></script>
+  <script type="module" src="index.js"></script>
+
+</head>
+
+<body class="bg-gray-50 flex justify-center items-center min-h-screen">
+
+  <div id="auth-container"
+    class="w-full sm:w-96 p-8 bg-white rounded-3xl shadow-2xl transition-all transform hover:scale-105 hover:shadow-2xl">
+    <h2 class="text-3xl font-bold mb-6 text-center text-violet-500">Login <i class="fa-brands fa-google"></i></h2>
+
+    <div class="flex justify-center space-x-4">
+      <button id="google-login"
+        class="btn btn-primary w-full sm:w-auto px-6 py-3 rounded-lg shadow-md transition duration-300 transform hover:bg-violet-600 hover:scale-105">
+        Log in with <i class="fa-brands fa-google"></i>
+      </button>
+    </div>
+
+    <div class="mt-4 text-center">
+      <button id="logout-btn"
+        class="btn btn-outline btn-error w-full sm:w-auto px-6 py-3 rounded-lg shadow-md hidden transition duration-300 transform hover:bg-red-600 hover:scale-105">
+        Logout
+      </button>
+    </div>
+  </div>
+
+</body>
+
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Investor Page</title>
+
+  <!-- Include Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Include DaisyUI -->
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.22/dist/full.min.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen space-y-8">
+
+  <!-- User Info Section -->
+  <div class="text-center">
+    <img id="userProfilePic" alt="Profile Picture" class="hidden w-20 h-20 rounded-full mx-auto mb-4" />
+    <h2 class="text-2xl font-bold mb-2">Welcome, <span id="userName"></span>!</h2>
+    <p class="text-gray-600">You have successfully logged in.</p>
+    <div>
+      <button id="logout-btn" class="btn btn-outline btn-error mt-4">Logout</button>
+
+      <a class="btn btn-outline btn-accent" href="./product.html">Products</a>
+
+      <a class="btn btn-outline btn-accent" href="./md.html">See Mudaraba Profit</a>
+
+    </div>
+  </div>
+
+  <!-- Google Sheets Data Section -->
+  <div class="max-w-5xl w-full bg-gray-900 rounded-lg shadow-lg p-8 mx-4">
+    <h1 class="text-3xl font-bold text-center text-white mb-4">Investors data Data</h1>
+    <div class="overflow-x-auto">
+      <table id="sheet-data" class="table table-zebra table-auto w-full text-center rounded-lg text-white">
+        <tbody>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script type="module">
+    import { auth } from './firebase.js';
+    import { signOut } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
+
+    // Logout functionality
+    const logoutBtn = document.getElementById('logout-btn');
+    logoutBtn.addEventListener('click', async () => {
+      await signOut(auth);
+      alert("Logged out successfully.");
+      window.location.href = "index.html";
+    });
+
+    // Populate user data
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        document.getElementById('userName').textContent = user.displayName || user.email;
+        const profilePic = document.getElementById('userProfilePic');
+        if (user.photoURL) {
+          profilePic.src = user.photoURL;
+          profilePic.classList.remove('hidden');
+        }
+      } else {
+        alert("No user is logged in. Redirecting to login page...");
+        window.location.href = "index.html";
+      }
+    });
+  </script>
+
+
+  <script>
+    // Define an array of colors for each column
+    const columnColors = ['#FF5733', '#33FF57', '#3357FF', '#FFC300', '#DA33FF', '#FF33A1'];
+
+    // Google Sheets CSV URL
+    const sheetURL = 'https://docs.google.com/spreadsheets/d/15XIKTLoJoO_V_8epo8Romumtha1SpUcICpM__1l1lOA/gviz/tq?tqx=out:csv';
+
+    fetch(sheetURL)
+      .then(response => response.text())
+      .then(data => {
+        const rows = data.split('\n').map(row => row.split(','));
+        const outputTable = document.querySelector('#sheet-data tbody');
+
+        rows.forEach((row, index) => {
+          const newRow = document.createElement('tr');
+
+          row.forEach((cell, cellIndex) => {
+            const newCell = document.createElement(index === 0 ? 'th' : 'td');
+            newCell.textContent = cell;
+
+            // Apply a unique border color to each column
+            newCell.style.border = `2px solid ${columnColors[cellIndex % columnColors.length]}`;
+
+            // Add animation styles (adjust these for your needs)
+            newCell.style.transition = 'all 0.3s ease';
+            newCell.addEventListener('mouseover', () => {
+              newCell.style.transform = 'scale(1.1)';
+              newCell.style.boxShadow = `0px 0px 10px ${columnColors[cellIndex % columnColors.length]}`;
+            });
+            newCell.addEventListener('mouseout', () => {
+              newCell.style.transform = 'scale(1)';
+              newCell.style.boxShadow = 'none';
+            });
+
+            newRow.appendChild(newCell);
+          });
+
+          outputTable.appendChild(newRow);
+        });
+      })
+      .catch(error => console.error('Error fetching Google Sheets:', error));
+  </script>
+
+
+
+</body>
+
+</html>

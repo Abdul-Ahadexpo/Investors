@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mudaraba Calculator</title>
+  <!-- Tailwind CSS & DaisyUI -->
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.22/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script src="https://kit.fontawesome.com/5fc4420cfa.js" crossorigin="anonymous"></script>
+
+</head>
+
+<body class="bg-gray-50 py-10">
+
+  <!-- Container -->
+  <div class="container mx-auto p-8 bg-white rounded-2xl shadow-2xl max-w-xl"><a href="./investor.html"><i
+        class="fa-solid fa-house"></i></a>
+    <h1 class="text-3xl font-bold text-center mb-6 text-violet-500">Mudaraba Profit Calculator</h1>
+
+    <!-- Form -->
+    <div class="space-y-6">
+      <div>
+        <label for="capital" class="block text-gray-700 text-lg">Your Total Capital Invested (BDT)</label>
+        <input id="capital" type="number"
+          class="input input-bordered w-full focus:ring-violet-500 focus:border-violet-500" placeholder="Enter capital">
+      </div>
+
+      <div>
+        <label for="rabRatio" class="block text-gray-700 text-lg">Your Profit Share (%)</label>
+        <input id="rabRatio" type="number"
+          class="input input-bordered w-full focus:ring-violet-500 focus:border-violet-500"
+          placeholder="Enter Your share" value="40" readonly>
+      </div>
+
+      <div>
+        <label for="mudaribRatio" class="block text-gray-700 text-lg">Seller's Profit Share (%)</label>
+        <input id="mudaribRatio" type="number"
+          class="input input-bordered w-full focus:ring-violet-500 focus:border-violet-500"
+          placeholder="Enter Seller's share" value="60" readonly>
+      </div>
+
+      <div>
+        <label for="totalProfit" class="block text-gray-700 text-lg">Total Profit (BDT)</label>
+        <input id="totalProfit" type="number"
+          class="input input-bordered w-full focus:ring-violet-500 focus:border-violet-500"
+          placeholder="Enter total profit">
+      </div>
+
+      <!-- Calculate Button -->
+      <div class="flex justify-center mt-6">
+        <button id="calculateBtn"
+          class="btn btn-primary w-full max-w-xs hover:bg-violet-600 transition duration-300">Calculate</button>
+      </div>
+    </div>
+
+    <!-- Result -->
+    <div id="result" class="mt-6 hidden text-black font-semibold">
+      <h2 class="text-xl font-semibold mb-4 text-violet-500">Result</h2>
+      <div class="space-y-2">
+        <p><strong class="text-green-400">Your Profit Share: </strong><span id="rabResult"
+            class="text-black font-bold text-lg">0</span> BDT</p>
+        <p><strong>Seller's Profit Share: </strong><span id="mudaribResult"
+            class="text-black font-bold text-lg">0</span> BDT</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    document.getElementById('calculateBtn').addEventListener('click', function () {
+      // Get values
+      const capital = parseFloat(document.getElementById('capital').value);
+      const rabRatio = parseFloat(document.getElementById('rabRatio').value);
+      const mudaribRatio = parseFloat(document.getElementById('mudaribRatio').value);
+      const totalProfit = parseFloat(document.getElementById('totalProfit').value);
+
+      // Validate inputs
+      if (isNaN(capital) || isNaN(rabRatio) || isNaN(mudaribRatio) || isNaN(totalProfit) ||
+        rabRatio + mudaribRatio !== 100) {
+        alert("Please make sure all fields are filled correctly and the ratios add up to 100%.")
+        return;
+      }
+
+      // Calculate shares
+      const rabShare = (rabRatio / 100) * totalProfit;
+      const mudaribShare = (mudaribRatio / 100) * totalProfit;
+
+      // Show result
+      document.getElementById('rabResult').textContent = rabShare.toFixed(2);
+      document.getElementById('mudaribResult').textContent = mudaribShare.toFixed(2);
+      document.getElementById('result').classList.remove('hidden');
+    });
+  </script>
+
+</body>
+
+</html>
