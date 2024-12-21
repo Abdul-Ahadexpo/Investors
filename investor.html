@@ -71,7 +71,7 @@
   </script>
 
 
-  <script>
+    <script>
     // Define an array of colors for each column
     const columnColors = ['#FF5733', '#33FF57', '#3357FF', '#FFC300', '#DA33FF', '#FF33A1'];
 
@@ -89,7 +89,11 @@
 
           row.forEach((cell, cellIndex) => {
             const newCell = document.createElement(index === 0 ? 'th' : 'td');
-            newCell.textContent = cell;
+
+            // Remove quotes from the cell value
+            const cleanCell = cell.replace(/^"|"$/g, '');
+
+            newCell.textContent = cleanCell;
 
             // Apply a unique border color to each column
             newCell.style.border = `2px solid ${columnColors[cellIndex % columnColors.length]}`;
